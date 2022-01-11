@@ -38,3 +38,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.todo a {
+  color: black;
+  text-decoration: none;
+}
+.todo .router-link-exact-active {
+  color: green;
+  font-weight: bold;
+}
+</style>
