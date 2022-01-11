@@ -19,16 +19,25 @@ export default new Vuex.Store({
   },
   actions: {
     CREATE_TODO ({ commit }, { todo }) {
+      const todos = STORE.load()
+      todos.push(todo)
+      STORE.save(todos)
 
+      commit('SET_TODOS', todos)
+
+      return {
+        tId: todos.length - 1,
+        todo
+      }
     },
     READ_TODOS ({ commit }) {
       // 1. GET (load)
-      const localTodos = STORE.load()
+      const todos = STORE.load()
       // 2. write (commit mutation)
-      commit('SET_TODOS', localTodos)
+      commit('SET_TODOS', todos)
       // 3. return
       return {
-        localTodos
+        todos
       }
     },
     UPDATE_TODO ({ commit }, { tId, todo }) {
