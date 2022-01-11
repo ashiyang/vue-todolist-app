@@ -3,14 +3,27 @@ import Vuex from 'vuex'
 import LocalStorage from '../modules/LocalStorage'
 Vue.use(Vuex)
 
-const STORE = new LocalStorage('todo-vue')
+const STORE = LocalStorage('todo-vue')
 
 export default new Vuex.Store({
   state: {
-    todos: []
+    // from localStorage
+    todos: [
+      { content: '123', done: false },
+      { content: '456', done: false },
+      { content: 789, done: false }
+    ]
   },
+  // for UI
   getters: {
-
+    list (state) {
+      return state.todos.map((todo, tId) => {
+        return {
+          tId,
+          todo
+        }
+      })
+    }
   },
   mutations: {
     SET_TODOS (state, todos) {
@@ -41,7 +54,16 @@ export default new Vuex.Store({
       }
     },
     UPDATE_TODO ({ commit }, { tId, todo }) {
+      const todos = STORE.load()
+      todos.splice(tId, 1, todo)
+      STORE.save(todos)
 
+      commit('SET_TODOS', todos)
+
+      return {
+        tId,
+        todo
+      }
     },
     DELETE_TODO ({ commit }, { tId }) {
       const todos = STORE.load()
@@ -53,6 +75,14 @@ export default new Vuex.Store({
       return {
         tId: null,
         todo
+      }
+    },
+    CLEAR_TODOS ({ commit }) {
+      const todos = []
+      STORE.save(todos)
+      commit('SET_TODOS', todos)
+      return {
+        todos
       }
     }
   }
