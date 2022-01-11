@@ -23,6 +23,24 @@ export default new Vuex.Store({
           todo
         }
       })
+    },
+    filterList: (state, getters) => {
+      return (filter) => {
+        let status = null
+        switch (filter) {
+          case 'all':
+            return getters.list
+          case 'active':
+            status = false
+            break
+          case 'done':
+            status = true
+            break
+        }
+        return getters.list.filter(todo => {
+          return todo.todo.done === status
+        })
+      }
     }
   },
   mutations: {
