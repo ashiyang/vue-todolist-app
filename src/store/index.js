@@ -11,7 +11,7 @@ export default new Vuex.Store({
     todos: [
       { content: '123', done: false },
       { content: '456', done: false },
-      { content: 789, done: false }
+      { content: 789, done: true }
     ]
   },
   // for UI
