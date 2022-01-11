@@ -17,6 +17,8 @@
         :todo="item.todo"
         :edit="item.tId === edit"
         @check="(value) => checkHandler(item.tId, value)"
+        @editTodo="edit = item.tId"
+        @completedTodo="(value) => editCompletedHandler(item.tId, value)"
       />
     </ul>
   </div>
@@ -43,6 +45,7 @@ export default {
     $route: {
       immediate: true, // component 進來就做，得到網址參數
       handler: function (route) {
+        this.edit = null
         // check query => redirect
         this.filter = route.query.filter || 'all'
       }
@@ -51,6 +54,10 @@ export default {
   methods: {
     checkHandler (tId, done) {
       this.$store.dispatch('CHECK_TODO', { tId, done })
+    },
+    editCompletedHandler (tId, content) {
+      this.edit = null
+      this.$store.dispatch('UPDATE_TODO', { tId, content })
     }
   },
   components: {

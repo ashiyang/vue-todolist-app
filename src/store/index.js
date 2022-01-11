@@ -72,16 +72,17 @@ export default new Vuex.Store({
         todos
       }
     },
-    UPDATE_TODO ({ commit }, { tId, todo }) {
+    UPDATE_TODO ({ commit, state }, { tId, content }) {
+      if (state.todos[tId].contnet === content) return
       const todos = STORE.load()
-      todos.splice(tId, 1, todo)
+      todos[tId].content = content
       STORE.save(todos)
 
       commit('SET_TODOS', todos)
 
       return {
         tId,
-        todo
+        todo: todos[tId]
       }
     },
     CHECK_TODO ({ commit }, { tId, done }) {
