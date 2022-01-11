@@ -44,7 +44,16 @@ export default new Vuex.Store({
 
     },
     DELETE_TODO ({ commit }, { tId }) {
+      const todos = STORE.load()
+      const todo = todos.splice(tId, 1)[0]
+      STORE.save(todos)
 
+      commit('SET_TODOS', todos)
+
+      return {
+        tId: null,
+        todo
+      }
     }
   }
 })
